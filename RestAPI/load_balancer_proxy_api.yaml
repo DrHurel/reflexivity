@@ -1,0 +1,237 @@
+openapi: 3.0.3
+info:
+  title: Load Balancer Proxy API
+  description: This is a sample API description.
+  version: 0.0.1
+
+paths:
+  /status:
+    get:
+      summary: Get load balancer status
+      description: Retrieve the current status of the load balancer.
+      operationId: getLoadBalancerStatus
+      tags:
+        - Status
+      responses:
+        '200':
+          description: Load balancer status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "ok"
+        '500':
+          description: Internal server error
+  /services/start/{service_uuid}:
+    post:
+      summary: Start a service
+      description: Start a specific service by its UUID.
+      operationId: startService
+      tags:
+        - Service
+      parameters:
+        - name: service_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The UUID of the service to start.
+      responses:
+        '200':
+          description: Service started successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Service started"
+        '404':
+          description: Service not found
+        '503':
+          description: Service unavailable
+  /services/stop/{service_uuid}:
+    post:
+      summary: Stop a service
+      description: Stop a specific service by its UUID.
+      operationId: stopService
+      tags:
+        - Service
+      parameters:
+        - name: service_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The UUID of the service to stop.
+  /services/restart/{service_uuid}:
+    post:
+      summary: Start a service
+      description: Start a specific service by its UUID.
+      operationId: startService
+      tags:
+        - Service
+      parameters:
+        - name: service_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The UUID of the service to start.
+  /services/instance/stop/{instance_uuiàd}:
+    post:
+      summary: Stop a service instance
+      description: Stop a specific service instance by its UUID.
+      operationId: stopServiceInstance
+      tags:
+        - Service
+      parameters:
+        - name: instance_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The UUID of the service instance to stop.
+      responses:
+        '200':
+          description: Service instance stopped successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Service instance stopped"
+        '404':
+          description: Service instance not found
+        '503':
+          description: Service unavailable
+  /services/instance/restart/{instance_uuid}:
+    post:
+      summary: Restart a service instance
+      description: Restart a specific service instance by its UUID.
+      operationId: restartServiceInstance
+      tags:
+        - Service
+      parameters:
+        - name: instance_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The UUID of the service instance to restart.
+      responses:
+        '200':
+          description: Service instance restarted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Service instance restarted"
+        '404':
+          description: Service instance not found
+        '503':
+          description: Service unavailable
+  /services:
+    get:
+      summary: List all services
+      description: Retrieve a list of all services managed by the load balancer.
+      operationId: listServices
+      tags:
+        - Service
+      responses:
+        '200':
+          description: A list of services
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    uuid:
+                      type: string
+                      example: "123e4567-e89b-12d3-a456-426614174000"
+                    name:
+                      type: string
+                      example: "Example Service"
+                    status:
+                      type: string
+                      example: "running"
+        '503':
+          description: Service unavailable
+  /services/{service_uuid}:
+    get:
+      summary: Get service details
+      description: Retrieve details of a specific service by its UUID.
+      operationId: getServiceDetails
+      tags:
+        - Service
+      parameters:
+        - name: service_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The UUID of the service to retrieve.
+  /services/instance/:
+    get:
+      summary: List all service instances
+      description: Retrieve a list of all service instances managed by the load balancer.
+      operationId: listServiceInstances
+      tags:
+        - Service
+      responses:
+        '200':
+          description: A list of service instances
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    uuid:
+                      type: string
+                      example: "123e4567-e89b-12d3-a456-426614174000"
+                    service_uuid:
+                      type: string
+                      example: "123e4567-e89b-12d3-a456-426614174000"
+                    status:
+                      type: string
+                      example: "running"
+        '503':
+          description: Service unavailable
+  /services/instance/{instance_uuid}:
+    get:
+      summary: Get service instance details
+      description: Retrieve details of a specific service instance by its UUID.
+      operationId: getServiceInstanceDetails
+      tags:
+        - Service
+      parameters:
+        - name: instance_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The UUID of the service instance to retrieve.
+      responses:
+        '200':
+          description: Service instance details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    type: string
+
