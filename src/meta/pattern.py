@@ -1,5 +1,5 @@
 from threading import Lock
-from typing import Any, Generic, Optional, TypeVar
+from typing import Any, Generic, Optional, TypeVar, cast
 
 
 class Singleton(type):
@@ -47,3 +47,25 @@ class Result(Generic[T]):
             return f"Result(success: {self.value})"
         else:
             return f"Result(failure: {self.error})"
+
+
+class Atomic(Generic[T]):
+    def __init__(self, value: T) -> None:
+        self._value = value
+        self._lock = Lock()
+
+    def get(self) -> T:
+        with self._lock:
+            return self._value
+
+    def set(self, value: T) -> None:
+        with self._lock:
+            self._value = value
+
+    def __eq__(self, value: object) -> bool:
+        if isinstance(value, Atomic):
+            return self.get().__eq__(cast(Any,value.get()))
+        return self.get() == value
+
+    def __bool__(self) -> bool:
+        return bool(self.get())
